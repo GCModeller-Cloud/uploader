@@ -110,7 +110,7 @@ $(document).ready(function () {
 
 			var options = $.extend({
 				type: 'background-horizontal',
-				loading: 'Loading..',
+				loading: 'Uploading..',
 				finished: 'Done!'
 			}, button.data());
 
@@ -195,6 +195,7 @@ $(document).ready(function () {
 		// Every half a second check whether the progress
 		// has been incremented in the last two seconds
 
+		/*
 		var interval = window.setInterval(function () {
 
 			if (new Date().getTime() > 2000 + last_progress) {
@@ -206,6 +207,7 @@ $(document).ready(function () {
 			}
 
 		}, 500);
+*/
 
 		button.on('progress-finish', function () {
 			window.clearInterval(interval);
@@ -243,6 +245,7 @@ $(document).ready(function () {
 	// This function creates a progress meter that
 	// finishes in a specified amount of time.
 
+	/*
 	$.fn.progressTimed = function (seconds, cb) {
 
 		var button = this.first(),
@@ -268,5 +271,6 @@ $(document).ready(function () {
 
 		}, seconds * 1000);
 	};
+*/
 
 })(jQuery);
