@@ -47,6 +47,8 @@ $(document).ready(function () {
 
 	var controlButton = $('#controlButton');
 
+	/*
+
 	controlButton.click(function (e) {
 		e.preventDefault();
 
@@ -56,6 +58,7 @@ $(document).ready(function () {
 
 		controlButton.progressStart();
 	});
+*/
 
 	$('.command.increment').click(function () {
 

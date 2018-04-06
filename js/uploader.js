@@ -1,6 +1,8 @@
 
 'use strict';
 
+var droppedFiles = false;
+
 ; (function (document, window, index) {
 	// feature detection for drag&drop upload
 	var isAdvancedUpload = function () {
@@ -14,8 +16,7 @@
 		var input = form.querySelector('input[type="file"]'),
 			label = form.querySelector('label'),
 			errorMsg = form.querySelector('.box__error span'),
-			restart = form.querySelectorAll('.box__restart'),
-			droppedFiles = false,
+			restart = form.querySelectorAll('.box__restart'),			
 			showFiles = function (files) {
 				label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
 			},
@@ -83,6 +84,21 @@ function upload(url) {
 	var fileObj = document.getElementById("file").files[0]; // js 获取文件对象			
 	var form = new FormData(); // FormData 对象
 
+	console.log(fileObj);
+	console.log(droppedFiles);
+	
+	if (!fileObj) {
+		// 没有选择任何文件
+		var progressBar = document.getElementById("progressBar");
+		var button = $('#controlButton');
+
+		progressBar.innerHTML = "<span style='color:red'>* Please select a file to upload at first!</span>";
+		// button.progressSet(0);
+		button.removeClass('in-progress');
+
+		return;
+	}
+
 	form.append("mf", fileObj); // 文件对象
 
 	xhr = new XMLHttpRequest();  // XMLHttpRequest 对象
@@ -132,7 +148,7 @@ function progressFunction(evt) {
 	speed = speed.toFixed(1);
 	//剩余时间
 	var resttime = ((evt.total - evt.loaded) / bspeed).toFixed(1);
-	progressBar.innerHTML = percentage + "%" + '(' + speed + units + ', ETA: ' + resttime + 's)';
+	progressBar.innerHTML = percentage + "%" + ' (' + speed + units + ', ETA: ' + resttime + 's)';
 
 	var controlButton = $('#controlButton');
 	controlButton.progressSet(percentage);
