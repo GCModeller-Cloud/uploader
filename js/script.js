@@ -216,7 +216,7 @@ $(document).ready(function () {
 			window.clearInterval(interval);
 		});
 
-		return button.progressIncrement(10);
+		return button.progressIncrement(0);
 	};
 
 	$.fn.progressFinish = function () {

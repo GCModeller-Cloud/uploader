@@ -94,11 +94,10 @@ function upload(url) {
 			// 通过拖拽来选择文件
 			fileObj = droppedFiles[0];
 			form.append("mf", fileObj); // 文件对象
-		} else {
-			var progressBar = document.getElementById("progressBar");
+		} else {			
 			var button = $('#controlButton');
 	
-			progressBar.innerHTML = "<span style='color:red'>* Please select a file to upload at first!</span>";
+			document.getElementById("warning").innerHTML = "<span style='color:red'>* Please select a file to upload at first!</span>";
 			// button.progressSet(0);
 			button.removeClass('in-progress');
 	
