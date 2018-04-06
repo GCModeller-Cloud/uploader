@@ -51,7 +51,7 @@
 		var oloaded;
 
 		function upload(url) {
-			var fileObj = document.getElementById("upload-box").files[0]; // js 获取文件对象			
+			var fileObj = document.getElementById("file").files[0]; // js 获取文件对象			
 			var form = new FormData(); // FormData 对象
 
 			form.append("mf", fileObj); // 文件对象
