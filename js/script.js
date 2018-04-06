@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
 	// Convert all the links with the progress-button class to
 	// actual buttons with progress meters.
@@ -10,7 +10,7 @@ $(document).ready(function(){
 	// Listen for clicks on the first three buttons, and start
 	// the progress animations
 
-	$('#submitButton').click(function(e){
+	$('#submitButton').click(function (e) {
 		e.preventDefault();
 
 		// This function will show a progress meter for
@@ -19,24 +19,24 @@ $(document).ready(function(){
 		$(this).progressTimed(2);
 	});
 
-	$('#actionButton').click(function(e){
+	$('#actionButton').click(function (e) {
 		e.preventDefault();
 		$(this).progressTimed(2);
 	});
 
-	$('#generateButton').one('click', function(e){
+	$('#generateButton').one('click', function (e) {
 		e.preventDefault();
 
 		// It can take a callback
 
 		var button = $(this);
-		button.progressTimed(3, function(){
+		button.progressTimed(3, function () {
 
 			// In this callback, you can set the href attribute of the button
 			// to the URL of the generated file. For the demo, we will only
 			// set up a new event listener that alerts a message.
 
-			button.click(function(){
+			button.click(function () {
 				alert('Showing how a callback works!');
 			});
 		});
@@ -47,7 +47,7 @@ $(document).ready(function(){
 
 	var controlButton = $('#controlButton');
 
-	controlButton.click(function(e){
+	controlButton.click(function (e) {
 		e.preventDefault();
 
 		// You can optionally call the progressStart function.
@@ -57,7 +57,7 @@ $(document).ready(function(){
 		controlButton.progressStart();
 	});
 
-	$('.command.increment').click(function(){
+	$('.command.increment').click(function () {
 
 		// Increment the progress bar with 10%. Pass a number
 		// as an argument to increment with a different amount.
@@ -65,18 +65,18 @@ $(document).ready(function(){
 		controlButton.progressIncrement();
 	});
 
-	$('.command.set-to-1').click(function(){
+	$('.command.set-to-1').click(function () {
 
 		// Set the progress meter to the specified percentage
 
 		controlButton.progressSet(1);
 	});
 
-	$('.command.set-to-50').click(function(){
+	$('.command.set-to-50').click(function () {
 		controlButton.progressSet(50);
 	});
 
-	$('.command.finish').click(function(){
+	$('.command.finish').click(function () {
 
 		// Set the progress meter to 100% and show the done text.
 		controlButton.progressFinish();
@@ -87,12 +87,12 @@ $(document).ready(function(){
 // The progress meter functionality is available as a series of plugins.
 // You can put this code in a separate file if you want to keep things tidy.
 
-(function($){
+(function ($) {
 
 	// Creating a number of jQuery plugins that you can use to
 	// initialize and control the progress meters.
 
-	$.fn.progressInitialize = function(){
+	$.fn.progressInitialize = function () {
 
 		// This function creates the necessary markup for the progress meter
 		// and sets up a few event listeners.
@@ -100,7 +100,7 @@ $(document).ready(function(){
 
 		// Loop through all the buttons:
 
-		return this.each(function(){
+		return this.each(function () {
 
 			var button = $(this),
 				progress = 0;
@@ -109,23 +109,23 @@ $(document).ready(function(){
 			// If they are missing, they will receive default values.
 
 			var options = $.extend({
-				type:'background-horizontal',
+				type: 'background-horizontal',
 				loading: 'Loading..',
 				finished: 'Done!'
 			}, button.data());
 
 			// Add the data attributes if they are missing from the element.
 			// They are used by our CSS code to show the messages
-			button.attr({'data-loading': options.loading, 'data-finished': options.finished});
+			button.attr({ 'data-loading': options.loading, 'data-finished': options.finished });
 
 			// Add the needed markup for the progress bar to the button
 			var bar = $('<span class="tz-bar ' + options.type + '">').appendTo(button);
 
 
 			// The progress event tells the button to update the progress bar
-			button.on('progress', function(e, val, absolute, finish){
+			button.on('progress', function (e, val, absolute, finish) {
 
-				if(!button.hasClass('in-progress')){
+				if (!button.hasClass('in-progress')) {
 
 					// This is the first progress event for the button (or the
 					// first after it has finished in a previous run). Re-initialize
@@ -139,22 +139,22 @@ $(document).ready(function(){
 				// val, absolute and finish are event data passed by the progressIncrement
 				// and progressSet methods that you can see near the end of this file.
 
-				if(absolute){
+				if (absolute) {
 					progress = val;
 				}
-				else{
+				else {
 					progress += val;
 				}
 
-				if(progress >= 100){
+				if (progress >= 100) {
 					progress = 100;
 				}
 
-				if(finish){
+				if (finish) {
 
 					button.removeClass('in-progress').addClass('finished');
 
-					bar.delay(500).fadeOut(function(){
+					bar.delay(500).fadeOut(function () {
 
 						// Trigger the custom progress-finish event
 						button.trigger('progress-finish');
@@ -166,9 +166,9 @@ $(document).ready(function(){
 				setProgress(progress);
 			});
 
-			function setProgress(percentage){
-				bar.filter('.background-horizontal,.background-bar').width(percentage+'%');
-				bar.filter('.background-vertical').height(percentage+'%');
+			function setProgress(percentage) {
+				bar.filter('.background-horizontal,.background-bar').width(percentage + '%');
+				bar.filter('.background-vertical').height(percentage + '%');
 			}
 
 		});
@@ -178,26 +178,26 @@ $(document).ready(function(){
 	// progressStart simulates activity on the progress meter. Call it first,
 	// if the progress is going to take a long time to finish.
 
-	$.fn.progressStart = function(){
+	$.fn.progressStart = function () {
 
 		var button = this.first(),
 			last_progress = new Date().getTime();
 
-		if(button.hasClass('in-progress')){
+		if (button.hasClass('in-progress')) {
 			// Don't start it a second time!
 			return this;
 		}
 
-		button.on('progress', function(){
+		button.on('progress', function () {
 			last_progress = new Date().getTime();
 		});
 
 		// Every half a second check whether the progress
 		// has been incremented in the last two seconds
 
-		var interval = window.setInterval(function(){
+		var interval = window.setInterval(function () {
 
-			if( new Date().getTime() > 2000+last_progress){
+			if (new Date().getTime() > 2000 + last_progress) {
 
 				// There has been no activity for two seconds. Increment the progress
 				// bar a little bit to show that something is happening
@@ -207,66 +207,66 @@ $(document).ready(function(){
 
 		}, 500);
 
-		button.on('progress-finish',function(){
+		button.on('progress-finish', function () {
 			window.clearInterval(interval);
 		});
 
 		return button.progressIncrement(10);
 	};
 
-	$.fn.progressFinish = function(){
+	$.fn.progressFinish = function () {
 		return this.first().progressSet(100);
 	};
 
-	$.fn.progressIncrement = function(val){
+	$.fn.progressIncrement = function (val) {
 
 		val = val || 10;
 
 		var button = this.first();
 
-		button.trigger('progress',[val])
+		button.trigger('progress', [val])
 
 		return this;
 	};
 
-	$.fn.progressSet = function(val){
+	$.fn.progressSet = function (val) {
 		val = val || 10;
 
 		var finish = false;
-		if(val >= 100){
+		if (val >= 100) {
 			finish = true;
 		}
 
-		return this.first().trigger('progress',[val, true, finish]);
+		return this.first().trigger('progress', [val, true, finish]);
 	};
 
 	// This function creates a progress meter that
 	// finishes in a specified amount of time.
 
-	$.fn.progressTimed = function(seconds, cb){
+	$.fn.progressTimed = function (seconds, cb) {
 
 		var button = this.first(),
 			bar = button.find('.tz-bar');
 
-		if(button.is('.in-progress')){
+		if (button.is('.in-progress')) {
 			return this;
 		}
 
 		// Set a transition declaration for the duration of the meter.
 		// CSS will do the job of animating the progress bar for us.
 
-		bar.css('transition', seconds+'s linear');
+		bar.css('transition', seconds + 's linear');
 		button.progressSet(99);
 
-		window.setTimeout(function(){
-			bar.css('transition','');
+		window.setTimeout(function () {
+			bar.css('transition', '');
 			button.progressFinish();
 
-			if($.isFunction(cb)){
+			if ($.isFunction(cb)) {
 				cb();
 			}
 
-		}, seconds*1000);
+		}, seconds * 1000);
 	};
 
 })(jQuery);
