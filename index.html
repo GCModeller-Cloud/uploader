@@ -103,13 +103,15 @@
 			speed = speed.toFixed(1);
 			//剩余时间
 			var resttime = ((evt.total - evt.loaded) / bspeed).toFixed(1);
-			progressBar.innerHTML = percentage + "%" + '，速度：' + speed + units + '，剩余时间：' + resttime + 's';
-			
+			progressBar.innerHTML = percentage + "%" + '(' + speed + units + ', ETA: ' + resttime + 's)';
+
 			var controlButton = $('#controlButton');
 			controlButton.progressSet(percentage);
 
-			if (bspeed == 0)
-				time.innerHTML = '上传已取消';
+			if (bspeed == 0) {
+				controlButton.progressFinish();
+			}
+
 		}
 		//上传成功响应
 		function uploadComplete(evt) {
@@ -120,7 +122,7 @@
 		}
 		//上传失败
 		function uploadFailed(evt) {
-			
+
 		}
 		//取消上传
 		function cancleUploadFile() {
