@@ -49,8 +49,7 @@
 				function uploadComplete(evt) {
 					// 服务断接收完文件返回的结果
 					// alert(evt.target.responseText);
-					var controlButton = $('#controlButton');
-					controlButton.progressFinish();
+					console.log($.parseJSON(evt.target.responseText));		
 				}
 
 				// 上传失败
