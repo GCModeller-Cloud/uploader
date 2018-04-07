@@ -8,13 +8,10 @@
 
 	<title>Drag and Drop File Uploading</title>
 	<link rel="stylesheet" href="./styles/uploader.css">
-
 </head>
 
 <body>
-
 	<div class="container" role="main">
-
 		<form method="post" id="upload-box" action="#" enctype="multipart/form-data" novalidate class="box">
 
 			<div class="box__input">
@@ -33,6 +30,7 @@
 					</p>
 					<div id="progressBar"></div>
 					<br />
+					<!-- 在onclick事件之中设置上传接受的url地址 -->
 					<a id="controlButton" href="#" class="progress-button" onclick="upload('/test/index.php')">
 						<svg data-prefix="fas" data-icon="arrow-up" role="img" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 448 512"
 						 class="svg-inline--fa fa-arrow-up fa-w-14 fa-7x">
@@ -45,19 +43,21 @@
 				</div>
 			</div>
 
+			<!-- 修改下面的三个函数来处理上传所相对应的事件 -->			
 			<script type="text/javascript">
-				//上传成功响应
+				// 上传成功响应
 				function uploadComplete(evt) {
-					//服务断接收完文件返回的结果
-					//    alert(evt.target.responseText);
+					// 服务断接收完文件返回的结果
+					// alert(evt.target.responseText);
 					var controlButton = $('#controlButton');
 					controlButton.progressFinish();
 				}
-				//上传失败
+
+				// 上传失败
 				function uploadFailed(evt) {
 
 				}
-				//取消上传
+				// 取消上传
 				function cancleUploadFile() {
 					xhr.abort();
 				}
