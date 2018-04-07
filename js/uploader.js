@@ -83,6 +83,12 @@ var oloaded;
 function upload(url) {
 	var fileObj = document.getElementById("file").files[0]; // js 获取文件对象			
 	var form = new FormData(); // FormData 对象
+	var button = $('#controlButton');
+
+	if (xhr) {
+		// 已经在上传了
+		return;
+	}
 
 	console.log(fileObj);
 	console.log(droppedFiles);
@@ -95,8 +101,7 @@ function upload(url) {
 			fileObj = droppedFiles[0];
 			form.append("mf", fileObj); // 文件对象
 		} else {			
-			var button = $('#controlButton');
-	
+				
 			document.getElementById("warning").innerHTML = "<span style='color:red'>* Please select a file to upload at first!</span>";
 			// button.progressSet(0);
 			button.removeClass('in-progress');
@@ -106,6 +111,10 @@ function upload(url) {
 	} else {
 		form.append("mf", fileObj); // 文件对象
 	}	
+
+	button.click(function(e) {
+		e.preventDefault();
+	});
 
 	xhr = new XMLHttpRequest();  // XMLHttpRequest 对象
 	xhr.open("post", url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
