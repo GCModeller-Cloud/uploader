@@ -10,7 +10,7 @@
 	<title>文件管理</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 	<script>var global_upload = "{:U('index/post_upload_file_merge')}";</script>
-	<script src="js/jquery-3.2.1.min.js"></script>	
+	<script src="js/jquery-3.2.1.min.js"></script>
 	<link rel="stylesheet" href="styles/bootstrap.min.css">
 	<style>
 		.black_overlay {
@@ -259,15 +259,15 @@
 			// 在发送之间可以添加字段什么的。。。
 			// 如果默认的字段不够使用，可以通过监听此事件来扩展
 			uploader.on('uploadBeforeSend', function (block, data) {
-				
+
 				console.log(block['file']);
 
 				// var fileData = block['file'];
-				
+
 				// fileData.blocks = null;
 				// fileData.source = null;
 				// fileData._events = null;
-						
+
 				// console.log(fileData);	
 
 				// fileData = JSON.stringify(fileData);
@@ -278,7 +278,7 @@
 				// block为分块数据。
 				// file为分块对应的file对象。
 				data.file_md5 = block['file']['file_md5'];
-				data.guid = block.file.guid;			
+				data.guid = block.file.guid;
 
 				console.log(data);
 			});
