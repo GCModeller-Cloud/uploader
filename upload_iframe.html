@@ -8,79 +8,14 @@
 	<meta name="Keywords" content="">
 	<meta name="Description" content="">
 	<title>文件管理</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-	<script>var global_upload = "{:U('index/post_upload_file_merge')}";</script>
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<link rel="stylesheet" href="styles/bootstrap.min.css">
-	<style>
-		.black_overlay {
-			display: none;
-			position: absolute;
-			top: 0%;
-			left: 0%;
-			width: 100%;
-			height: 100%;
-			background-color: black;
-			z-index: 1001;
-			-moz-opacity: 0.8;
-			opacity: .80;
-			filter: alpha(opacity=80);
-		}
 
-		.itips {
-			position: absolute;
-			width: 90px;
-			background-color: #f0ad4e;
-			top: -20px;
-			right: -72px;
-			padding: 5px;
-			text-align: center;
-			font-size: 80%;
-			color: #fff;
-		}
 
-		.itips:after {
-			display: block;
-			content: '';
-			border-width: 8px 8px 8px 8px;
-			border-style: solid;
-			border-color: #f0ad4e transparent transparent transparent;
-			position: absolute;
-			right: 72px;
-			top: 100%;
-		}
-
-		html {
-			overflow-x: hidden;
-		}
-
-		/*去除iframe横向滚动条*/
-	</style>
-
-	<!--引入web-upload上传插件-->
-	<link rel="stylesheet" type="text/css" href="styles/webuploader.css">
-	<script type="text/javascript" src="js/webuploader.js"></script>
+	
 
 </head>
 
 <body>
-	<div id="content">
 
-		<div id="uploader" class="wu-example">
-			<input type="text" style="display:none" value="{$project_id}" name="project_id" id="{$project_id}" />
-			<input type="text" style="display:none" value="{$filefolder_id}" name="filefolder_id" id="{$filefolder_id}" />
-			<input type="text" style="display:none" value="{$filefolder_name}" name="filefolder_name" id="{$filefolder_name}" />
-			<!--用来存放文件信息-->
-			<div class="btns" style="margin-bottom: 20px;margin-top: 10px;">
-				<div id="picker" style="display: inline-block;">选择文件</div>
-				<button id="ctlBtn" class="btn btn-default" style="display: inline-block;margin-top:-30px;width:86px;height: 40px;">开始上传</button>
-			</div>
-			<div id="thelist" class="uploader-list">
-				<div class="title" style="display: inline-block;text-align: center;width: 200px;border: 1px solid #ddd;height: 40px;line-height: 40px;border-right: none;margin-right: -4px;font-size: 14px;color: #666;font-weight: bolder;">文件名称</div>
-				<div class="state" style="display: inline-block;text-align: center;width: 100px;border: 1px solid #ddd;height: 40px;line-height: 40px;border-right: none;margin-right: -4px;font-size: 14px;color: #666;font-weight: bolder;">文件大小</div>
-				<div class="state" style="display: inline-block;text-align: center;width: 400px;border: 1px solid #ddd;height: 40px;line-height: 40px;margin-right: -4px;font-size: 14px;color: #666;font-weight: bolder;">上传进度</div>
-			</div>
-		</div>
 
 
 		<script type="text/javascript">
