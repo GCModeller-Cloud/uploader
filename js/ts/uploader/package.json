@@ -1,0 +1,12 @@
+{
+  "name": "uploader",
+  "version": "0.0.0",
+  "description": "uploader",
+  "main": "app.js",
+  "author": {
+    "name": "Administrator"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.87"
+  }
+}
