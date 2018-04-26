@@ -2,13 +2,44 @@
 
     name: string;
     size: number;
+    type: fileObjectTypes;
+    parent: file;
 
-    unitSize(): string {
+    public unitSize(): string {
         return Utils.unitSize(this.size);
     }
 }
 
+enum fileObjectTypes { file, directory };
+
 namespace Utils {
+
+    /**
+     * 处理拖拽事件，解析获取得到拖拽事件所产生的文件对象树
+    */
+    export function populateTree(event: DragEvent): file {
+        var items = event.dataTransfer.items;
+        var root: file;
+
+        for (var i = 0; i < items.length; i++) {
+
+            // webkitGetAsEntry is where the magic happens
+            //
+            // A FileSystemEntry-based object describing the 
+            // dropped item. 
+            // This will be either FileSystemFileEntry or 
+            // FileSystemDirectoryEntry.
+            var entry: any = items[i].webkitGetAsEntry();
+
+            if (entry) {
+                if (entry.isFile) {
+                    var file: FileSystemFileEntry = (FileSystemFileEntry) entry;
+                }
+            }
+        }
+
+        return root;
+    }
 
     /**
      * 将数值无单位符号的字节大小值转换为带有单位的字节大小值
