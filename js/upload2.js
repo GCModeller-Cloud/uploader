@@ -9,22 +9,6 @@ var interval = 0;
 
 var fileMd5;  //文件唯一标识
 
-function unitSpeed(speed) {
-    console.log(speed);
-
-    if (speed <= 1024) {
-        speed = speed + 'B';
-    } else {
-        speed = speed / 1024 > 1024
-            ? speed / (1024 * 1024) > 1024
-                ? (speed / (1024 * 1024 * 1024)).toFixed(2) + 'GB'
-                : (speed / (1024 * 1024)).toFixed(2) + 'MB'
-            : (speed / 1024).toFixed(2) + 'KB';
-    }
-
-    return speed;
-}
-
 //获取该组别下所有的文件
 $(function () {
     $.ajax({
