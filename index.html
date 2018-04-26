@@ -28,9 +28,12 @@
 							<span class="box__dragndrop"> or drag it here</span>.
 						</label>
 					</p>
+					
 					<div id="progressBar"></div>
 					<br />
+
 					<!-- 在onclick事件之中设置上传接受的url地址 -->
+					<!-- 这个按钮只能够进行文件的选择，如果是文件夹的选择，则需要通过拖拽的方式来完成 -->
 					<a id="controlButton" href="#" class="progress-button" onclick="upload('/test/index.php')">
 						<svg data-prefix="fas" data-icon="arrow-up" role="img" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 448 512"
 						 class="svg-inline--fa fa-arrow-up fa-w-14 fa-7x">
