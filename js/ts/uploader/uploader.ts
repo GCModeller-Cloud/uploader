@@ -11,9 +11,6 @@ function tree(files: any[]): UploadFile {
         var folder: UploadFile = travelToParent(root, path);
         var obj: UploadFile = new UploadFile(file, name, size, folder);
 
-        // console.log(file);
-        // console.log(folder);
-
         folder.addChild(obj);
     });
 
@@ -24,15 +21,21 @@ function tree(files: any[]): UploadFile {
  * 返回路径所指示的最后一个文件夹，如果不存在，则会进行创建
 */
 function travelToParent(root: UploadFile, path: string[]): UploadFile {
-    for (var i = 0; i < path.length - 2; i++) {
+    console.log(path.join("/") + " => " + path[path.length - 2]);
+
+    for (var i = 0; i < path.length - 2; ++i) {
         var name: string = path[i];
         var folder: UploadFile = null;
 
-        if (root.hasOwnProperty(name)) {
-            folder = root.childs[name];;
+        console.log(name);
+
+        if (root.hasChild(name)) {
+            folder = root.childs[name];
+            console.log("get");
         } else {
             folder = new UploadFile(null, name, 0, root);
             root.addChild(folder);
+            console.log("build");
         }
 
         root = folder;

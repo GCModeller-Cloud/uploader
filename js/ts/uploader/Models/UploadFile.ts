@@ -37,6 +37,14 @@ class UploadFile {
         return `${this.QualifyName()} (${this.unitSize()})`;
     }
 
+    public hasChild(name: string): boolean {
+        if (!this.childs || this.childs.length == 0) {
+            return false;
+        } else {
+            return this.childs.hasOwnProperty(name);
+        }
+    }
+
     /**
      * Append a file as child in this tree and returns current object instance.
      * 
