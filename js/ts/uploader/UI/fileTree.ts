@@ -91,11 +91,13 @@ namespace UI {
             console.log(file.childs);
             console.log(file);
 
-            // do {
-            //     if (file.childs && file.childs.length >= 0) {
-            //         break;
-            //     }
-            // } while(true);
+            do {
+                if (!file.childs) {
+                    console.log(file);
+                } else {
+                    break;
+                }
+            } while(true);
 
             file.childs.forEach(node => {
                 return jsTreeData(node);

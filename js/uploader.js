@@ -81,6 +81,8 @@ var droppedFiles = false;
 					form.classList.remove('is-dragover');
 				});
 			});
+
+			/*
 			form.addEventListener('drop', function (event) {
 
 				// 处理拖拽事件
@@ -95,6 +97,18 @@ var droppedFiles = false;
 
 				showFiles(droppedFiles);
 			});
+			*/
+
+			form.addEventListener("drop", function (event) {
+				event.preventDefault();
+
+				getFilesWebkitDataTransferItems(event.dataTransfer.items)
+					.then(files => {
+						var root = tree(files);
+
+						console.log(root);
+					})
+			}, false);
 		}
 
 		// Firefox focus bug fix for file input

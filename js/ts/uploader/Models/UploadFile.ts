@@ -7,23 +7,19 @@ class UploadFile {
     readonly size: number;
     readonly type: fileObjectTypes;
     readonly parent: UploadFile;
-    readonly obj: any;
+    readonly file: File;
 
     public childs: UploadFile[];
 
-    constructor(obj: any, name: string, size: number, parent: UploadFile) {
-        if (!obj && !parent) {
-            // root directory
+    constructor(file: File, name: string, size: number, parent: UploadFile) {
+        if (!file) {
+            // directory
             this.type = fileObjectTypes.directory;
         } else {
-            if (obj.isFile) {
-                this.type = fileObjectTypes.file;
-            } else {
-                this.type = fileObjectTypes.directory;
-            }
+            this.type = fileObjectTypes.file;
         }
 
-        this.obj = obj;
+        this.file = file;
         this.name = name;
         this.size = size;
         this.parent = parent;
@@ -53,7 +49,7 @@ class UploadFile {
         if (!this.childs) {
             this.childs = [];
         }
-        this.childs.push(child);
+        this.childs[child.name] = (child);
 
         return this;
     }

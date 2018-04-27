@@ -1,149 +1,47 @@
-﻿namespace Utils {
+﻿/**
+ * 根据文件路径构建出文件系统树
+*/
+function tree(files: any[]): UploadFile {
+    var root: UploadFile = new UploadFile(null, "/", -1, null);
 
-    class onReadyHandle {
+    files.forEach(file => {
+        var path: string[] = file.filepath.split("/");
+        var name: string = file.name;
+        var size: number = file.size;
+        var folder: UploadFile = travelToParent(root, path);
+        var obj: UploadFile = new UploadFile(file, name, size, folder);
 
-        public isReady: boolean;
+        // console.log(file);
+        // console.log(folder);
 
-        constructor() {
-            this.isReady = false;
+        folder.addChild(obj);
+    });
+
+    return root
+}
+
+/**
+ * 返回路径所指示的最后一个文件夹，如果不存在，则会进行创建
+*/
+function travelToParent(root: UploadFile, path: string[]): UploadFile {
+    for (var i = 0; i < path.length - 2; i++) {
+        var name: string = path[i];
+        var folder: UploadFile = null;
+
+        if (root.hasOwnProperty(name)) {
+            folder = root.childs[name];;
+        } else {
+            folder = new UploadFile(null, name, 0, root);
+            root.addChild(folder);
         }
 
-        ready() {
-            this.isReady = true;
-        }
+        root = folder;
     }
 
-    /**
-     * 处理拖拽事件，解析获取得到拖拽事件所产生的文件对象树
-    */
-    export function populateTree(event: DragEvent): UploadFile {
-        var items = event.dataTransfer.items;
-        var root: UploadFile = new UploadFile(null, "/", -1, null);
-        var onReady: onReadyHandle[] = [];
+    return root;
+}
 
-        for (var i = 0; i < items.length; i++) {
-
-            // webkitGetAsEntry is where the magic happens
-            //
-            // A FileSystemEntry-based object describing the 
-            // dropped item. 
-            // This will be either FileSystemFileEntry or 
-            // FileSystemDirectoryEntry.
-            var entry: any = items[i].webkitGetAsEntry();
-
-            if (entry) {
-                if (entry.isFile) {
-                    var sync: onReadyHandle = new onReadyHandle();
-
-                    FileNode(root, entry, (file: UploadFile) => {
-                        root.addChild(file);
-                        sync.ready();
-                    });
-
-                    // 异步转同步
-                    onReady.push(sync);
-                } else {
-                    root.addChild(DirectoryNode(root, entry));
-                }
-            }
-        }
-
-        console.log("Wait for FileSystem Ready...");
-        waitForReady(onReady);
-        console.log("Your FileSystem is ready!");
-        console.log(root);
-
-        return root;
-    }
-
-    function waitForReady(onReady: onReadyHandle[]) {
-        do {
-            var n = onReady.length;
-            onReady.forEach(handle => {
-                if (handle.isReady) {
-                    n--;
-                }
-            });
-
-            if (n == 0) {
-                break;
-            }
-        } while (true);
-    }
-
-    function DirectoryNode(root: UploadFile, entry: any) {
-        // Get folder contents
-        var dirReader = entry.createReader();
-        var folder: UploadFile = new UploadFile(
-            entry,
-            entry.name,
-            0,
-            root);
-        var onReady: onReadyHandle[] = [];
-
-        dirReader.readEntries(function (entries) {
-
-            for (var i = 0; i < entries.length; i++) {
-                var file: any = entries[i];
-
-                if (file.isFile) {
-                    var sync: onReadyHandle = new onReadyHandle();
-
-                    FileNode(folder, file, (file: UploadFile) => {
-                        folder.addChild(file);
-                        sync.ready();
-                    })
-
-                    // 异步转同步
-                    onReady.push(sync);
-                } else {
-                    folder.addChild(DirectoryNode(folder, file));
-                }
-            }
-
-        }, function (error) {
-            /* handle error -- error is a FileError object */
-
-            // 2018-4-27 
-            // 当网页是直接从文件系统启动的时候，使用的协议为file://
-            // 会出现下面的错误
-            // DOMException: A URI supplied to the API was malformed, or the resulting Data URL has exceeded the URL length limitations for Data URLs.
-
-            /*
-                https://developer.mozilla.org/en-US/docs/Web/API/FileError
-
-                Where we can reed :
-                Don't run your app from file://
-                For security reasons, browsers do not allow you to run your app from file://.
-                But using evt.dataTransfer.files seems to be ok, so this security limitation of drop seems to be partial.
-            */
-
-            // 在调试的时候应该从web服务器启动，在localhost进行调试
-
-            console.error(error);
-        });
-
-        waitForReady(onReady);
-
-        return folder;
-    }
-
-    function FileNode(root: UploadFile, entry: any, append: Function) {
-        var localFile: any = entry.file(localfile => {
-            var child: UploadFile = new UploadFile(
-                entry,
-                localfile.name,
-                localfile.size,
-                root
-            );
-
-            // console.log(child.toString());
-
-            append(child);
-        });
-
-        // console.log(localFile);
-    }
+namespace Utils {
 
     /**
      * 将数值无单位符号的字节大小值转换为带有单位的字节大小值
