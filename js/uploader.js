@@ -26,13 +26,16 @@ var droppedFiles = false;
 				$("#initial-scale").hide();
 				$("#progress-scale").show();
 
+				files = files.childs;
+				console.log("Views of childs");
 				console.log(files);
-				
+
 				// 将文件显示在进度页面之上
 				var trees = UI.showFiles(files);
-				
+
+				console.log("view of result tree:");
 				console.log(trees);
-				
+
 				// 如果是拖拽了多个文件，则显示文件的数量
 				// 反之只显示唯一的一个文件的文件名
 				// label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
@@ -79,10 +82,14 @@ var droppedFiles = false;
 				});
 			});
 			form.addEventListener('drop', function (event) {
-				
+
 				// 处理拖拽事件
-				var droppedFiles = Utils.populateTree(event).childs;
-							
+				var droppedFiles = Utils.populateTree(event);
+
+				console.log("dropped files: ");
+				console.log(droppedFiles);
+				console.log("end viewer");
+
 				// the files that were dropped
 				// droppedFiles = event.dataTransfer.files;
 

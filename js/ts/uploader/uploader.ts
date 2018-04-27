@@ -15,10 +15,8 @@
 
     /**
      * 处理拖拽事件，解析获取得到拖拽事件所产生的文件对象树
-     * 
-     * @param ready On filesystem tree build complete and ready for your operation.
     */
-    export function populateTree(event: DragEvent, ready: Function) {
+    export function populateTree(event: DragEvent): UploadFile {
         var items = event.dataTransfer.items;
         var root: UploadFile = new UploadFile(null, "/", -1, null);
         var onReady: onReadyHandle[] = [];
@@ -51,7 +49,14 @@
         }
 
         console.log("Wait for FileSystem Ready...");
+        waitForReady(onReady);
+        console.log("Your FileSystem is ready!");
+        console.log(root);
 
+        return root;
+    }
+
+    function waitForReady(onReady: onReadyHandle[]) {
         do {
             var n = onReady.length;
             onReady.forEach(handle => {
@@ -64,10 +69,6 @@
                 break;
             }
         } while (true);
-
-        console.log(root);
-
-        return root;
     }
 
     function DirectoryNode(root: UploadFile, entry: any) {
@@ -78,6 +79,7 @@
             entry.name,
             0,
             root);
+        var onReady: onReadyHandle[] = [];
 
         dirReader.readEntries(function (entries) {
 
@@ -85,9 +87,15 @@
                 var file: any = entries[i];
 
                 if (file.isFile) {
+                    var sync: onReadyHandle = new onReadyHandle();
+
                     FileNode(folder, file, (file: UploadFile) => {
                         folder.addChild(file);
+                        sync.ready();
                     })
+
+                    // 异步转同步
+                    onReady.push(sync);
                 } else {
                     folder.addChild(DirectoryNode(folder, file));
                 }
@@ -115,7 +123,7 @@
             console.error(error);
         });
 
-        // console.log(folder);
+        waitForReady(onReady);
 
         return folder;
     }

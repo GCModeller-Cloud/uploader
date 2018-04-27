@@ -16,6 +16,10 @@ namespace UI {
         // 将文件显示在进度页面之上
         // 每一个文件对象都是一个root节点
         var trees: Object[] = [];
+        
+        console.log("View from UI builder:");
+        console.log(files);
+        console.log("Build for jstree...");
 
         files.forEach(file => {
             trees.push(jsTree(file));
@@ -69,6 +73,8 @@ namespace UI {
     */
     function jsTreeData(file: UploadFile): Object {
 
+        console.log(file);
+
         if (file.type == fileObjectTypes.file) {
             // 只有这个当前的root节点
             return {
@@ -80,6 +86,16 @@ namespace UI {
             // 可能会存在多个子节点
             // 需要对树进行递归
             var childs: Object[] = [];
+
+            console.log("Childs of this file:");
+            console.log(file.childs);
+            console.log(file);
+
+            // do {
+            //     if (file.childs && file.childs.length >= 0) {
+            //         break;
+            //     }
+            // } while(true);
 
             file.childs.forEach(node => {
                 return jsTreeData(node);
