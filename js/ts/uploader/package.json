@@ -1,10 +1,10 @@
 {
   "name": "fstree",
-  "version": "0.0.0",
-  "description": "Local filesystem tree",
-  "main": "app.js",
+  "version": "1.0.123",
+  "description": "HTML5 javascript local filesystem tree",
+  "main": "fstree.js",
   "author": {
-    "name": "Administrator"
+    "name": "I@xieguigang.me"
   },
   "devDependencies": {
     "@types/node": "^6.0.87"

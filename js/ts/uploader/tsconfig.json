@@ -10,7 +10,7 @@
     ],
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "outFile": "bin/uploader.js"
+    "outFile": "bin/fstree.js"
   },
   "exclude": [
     "node_modules"
