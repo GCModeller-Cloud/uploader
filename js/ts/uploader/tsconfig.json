@@ -2,7 +2,12 @@
   "compilerOptions": {
     "module": "amd",
     "target": "es5",
-    "lib": [ "dom", "es5", "dom.iterable", "scripthost" ],
+    "lib": [
+      "dom",
+      "es5",
+      "dom.iterable",
+      "scripthost"
+    ],
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "outFile": "bin/uploader.js"
