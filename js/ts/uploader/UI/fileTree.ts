@@ -14,8 +14,15 @@ function showFiles(files: UploadFile[]) {
     $("#progress-scale").show();
 
     // 将文件显示在进度页面之上
+    // 每一个文件对象都是一个root节点
+    var trees: Object[] = [];
 
+    files.forEach(file => {
+        trees.push(jsTree(file));
+    });
 
+    // 会在进度条列表之中显示出多个树
+    return trees;
 }
 
 /**
