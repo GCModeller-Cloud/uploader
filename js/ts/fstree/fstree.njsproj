@@ -26,7 +26,7 @@
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <EnableTypeScript>true</EnableTypeScript>
-    <StartWebBrowser>False</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,22 +35,18 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="UI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="fstree.ts" />
+    <TypeScriptCompile Include="Utils.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Utils.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="fstree.ts" />
-    <TypeScriptCompile Include="Models/UploadFile.ts" />
-    <TypeScriptCompile Include="Models/fileObjectTypes.ts" />
-    <TypeScriptCompile Include="UI\jstree.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="UI\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

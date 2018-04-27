@@ -5,8 +5,14 @@
     /**
      * 根据文件路径构建出文件系统树
     */
-    constructor(files: any[]) {
+    constructor() {
         var root = new UploadFile(null, "/", -1, null);
+
+        var files = [
+            { "filepath": "/a/bcde.js", "name": "bcde.js", "size": 250 },
+            { "filepath": "/a/b/c/d/e.js", "name": "e.js", "size": 5 },
+            { "filepath": "/a/b/c/de.js", "name": "de.js", "size": 25 }
+        ]
 
         files.forEach(file => {
             var path: string[] = file.filepath.split("/");
