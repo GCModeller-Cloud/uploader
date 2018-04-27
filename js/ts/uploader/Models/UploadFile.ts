@@ -23,6 +23,10 @@ class UploadFile {
         this.name = name;
         this.size = size;
         this.parent = parent;
+
+        if (this.type == fileObjectTypes.directory) {
+            this.childs = [];
+        }        
     }
 
     public QualifyName(): string {
@@ -53,11 +57,11 @@ class UploadFile {
     public addChild(child: UploadFile): UploadFile {
         if (this.type == fileObjectTypes.file) {
             throw new TypeError("Can not append a child into a file object, this function required a directory file type!");
-        }
-        if (!this.childs) {
-            this.childs = [];
-        }
-        this.childs[child.name] = (child);
+        } else {
+            // 如果是文件夹类型，因为childs已经在构造函数位置初始化了
+            // 所以在这里不需要再考虑是否为空的问题
+            this.childs[child.name] = child;
+        }        
 
         return this;
     }

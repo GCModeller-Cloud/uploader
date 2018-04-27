@@ -104,7 +104,7 @@ var droppedFiles = false;
 
 				getFilesWebkitDataTransferItems(event.dataTransfer.items)
 					.then(files => {
-						var root = tree(files);
+						var root = new fstree(files).root;
 
 						console.log(root);
 					})
