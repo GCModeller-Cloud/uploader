@@ -19,13 +19,11 @@
 
             if (entry) {
                 if (entry.isFile) {
-                    root.addChild(FileNode(root, entry));
+                    FileNode(root, entry, (file: UploadFile) => {
+                        root.addChild(file);
+                    });
                 } else {
-                    var list = readDirectory(entry);
-
-                    console.log(entry);
-                    console.log(list);
-                    // root.addChild(DirectoryNode(root, entry));
+                    root.addChild(DirectoryNode(root, entry));
                 }
             }
         }
@@ -42,41 +40,61 @@
             0,
             root);
 
-        console.log(folder.toString());
-        console.log(dirReader);
-
         dirReader.readEntries(function (entries) {
 
-            console.log(entries);
+            // console.log(entries);
 
             for (var i = 0; i < entries.length; i++) {
-                var file: any = entries[i].webkitGetAsEntry();
+                var file: any = entries[i];
 
-                if (file) {
-                    if (file.isFile) {
-                        folder.addChild(FileNode(folder, file));
-                    } else {
-                        folder.addChild(DirectoryNode(folder, file));
-                    }
+                if (file.isFile) {
+                    FileNode(folder, file, (file: UploadFile) => {
+                        folder.addChild(file);
+                    })
+                } else {
+                    folder.addChild(DirectoryNode(folder, file));
                 }
             }
+        }, function (error) {
+            /* handle error -- error is a FileError object */
+
+            // 2018-4-27 
+            // 当网页是直接从文件系统启动的时候，使用的协议为file://
+            // 会出现下面的错误
+            // DOMException: A URI supplied to the API was malformed, or the resulting Data URL has exceeded the URL length limitations for Data URLs.
+
+            /*
+                https://developer.mozilla.org/en-US/docs/Web/API/FileError
+
+                Where we can reed :
+                Don't run your app from file://
+                For security reasons, browsers do not allow you to run your app from file://.
+                But using evt.dataTransfer.files seems to be ok, so this security limitation of drop seems to be partial.
+            */
+
+            // 在调试的时候应该从web服务器启动，在localhost进行调试
+
+            console.error(error);
         });
+
+        console.log(folder);
 
         return folder;
     }
 
-    function FileNode(root: UploadFile, entry: any): UploadFile {
-        var localfile: File = entry.file();
-        var child: UploadFile = new UploadFile(
-            entry,
-            localfile.name,
-            localfile.size,
-            root
-        );
+    function FileNode(root: UploadFile, entry: any, append: Function) {
+        var localfile: File = entry.file(file => {
+            var child: UploadFile = new UploadFile(
+                entry,
+                localfile.name,
+                localfile.size,
+                root
+            );
 
-        console.log(child.toString());
+            console.log(child.toString());
 
-        return child;
+            append(child);
+        });
     }
 
     /**
@@ -98,50 +116,5 @@
         }
 
         return size;
-    }
-
-    function readDirectory(directory) {
-        let dirReader = directory.createReader();
-        let entries = [];
-
-        let getEntries = function () {
-            dirReader.readEntries(function (results) {
-
-                console.log(results);
-
-                if (results.length) {
-
-                    for (var i = 0; i < results.length; i++) { 
-                        entries.push(results[i]);
-                    }
-
-                    getEntries();
-                }
-            }, function (error) {
-                /* handle error -- error is a FileError object */
-
-                // 2018-4-27 
-                // 当网页是直接从文件系统启动的时候，使用的协议为file://
-                // 会出现下面的错误
-                // DOMException: A URI supplied to the API was malformed, or the resulting Data URL has exceeded the URL length limitations for Data URLs.
-
-                /*
-                    https://developer.mozilla.org/en-US/docs/Web/API/FileError
-
-                    Where we can reed :
-                    Don't run your app from file://
-                    For security reasons, browsers do not allow you to run your app from file://.
-                    But using evt.dataTransfer.files seems to be ok, so this security limitation of drop seems to be partial.
-                */
-
-                // 在调试的时候应该从web服务器启动，在localhost进行调试
-
-                console.error(error);
-            });
-        };
-
-        getEntries();
-
-        return entries;
     }
 }
