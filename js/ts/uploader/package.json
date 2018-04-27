@@ -1,7 +1,7 @@
 {
-  "name": "uploader",
+  "name": "fstree",
   "version": "0.0.0",
-  "description": "uploader",
+  "description": "Local filesystem tree",
   "main": "app.js",
   "author": {
     "name": "Administrator"

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "uploader", "uploader\uploader.njsproj", "{929DB7AF-FB0C-4A19-818D-7A9A0B1A81A1}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "fstree", "uploader\fstree.njsproj", "{929DB7AF-FB0C-4A19-818D-7A9A0B1A81A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
