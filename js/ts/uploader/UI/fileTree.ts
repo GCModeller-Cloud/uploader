@@ -14,6 +14,75 @@ function showFiles(files: UploadFile[]) {
     $("#progress-scale").show();
 
     // 将文件显示在进度页面之上
-    
-    
+
+
+}
+
+/**
+ * 这个函数按照jstree.js模块之中所要求的规则生成文件树的json数据模型
+ * 直接可以直接将这个结果应用于jsTree模块之中即可创建树
+ * 
+ * @description https://www.jstree.com/demo/
+*/
+function jsTree(file: UploadFile): Object {
+    return {
+        "core": {
+            "animation": 0,
+            "check_callback": true,
+            "themes": { "stripes": true },
+            "data": jsTreeData(file)
+        },
+        "types": {
+            // root node
+            "#": {
+                "max_children": 1,
+                "max_depth": 4,
+                "valid_children": ["root"]
+            },
+            "root": {
+                "icon": iconFolder,
+                "valid_children": ["default"]
+            },
+            "default": {
+                "icon": iconFolder,
+                "valid_children": ["default", "file"]
+            },
+            "file": {
+                "icon": iconFile,
+                "valid_children": []
+            }
+        }
+    };
+}
+
+/**
+ * 构建jstree的数据模型
+ * 
+ * @param file root节点
+*/
+function jsTreeData(file: UploadFile): Object {
+
+    if (file.type == fileObjectTypes.file) {
+        // 只有这个当前的root节点
+        return {
+            id: file.name,
+            text: file.name,
+            type: "file"
+        };
+    } else {
+        // 可能会存在多个子节点
+        // 需要对树进行递归
+        var childs: Object[] = [];
+
+        file.childs.forEach(node => {
+            return jsTreeData(node);
+        });
+
+        return {
+            "id": file.name,
+            "text": file.name,
+            "children": childs,
+            "type": "default"
+        };
+    }
 }
