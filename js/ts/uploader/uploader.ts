@@ -38,7 +38,13 @@
             0,
             root);
 
+        console.log(folder.toString());
+        console.log(dirReader);
+
         dirReader.readEntries(function (entries) {
+
+            console.log(entries);
+
             for (var i = 0; i < entries.length; i++) {
                 var file: any = entries[i].webkitGetAsEntry();
 
@@ -64,6 +70,8 @@
             root
         );
 
+        console.log(child.toString());
+
         return child;
     }
 
@@ -86,5 +94,24 @@
         }
 
         return size;
+    }
+
+    function readDirectory(directory) {
+        let dirReader = directory.createReader();
+        let entries = [];
+
+        let getEntries = function () {
+            dirReader.readEntries(function (results) {
+                if (results.length) {
+                    entries = entries.concat(toArray(results));
+                    getEntries();
+                }
+            }, function (error) {
+                /* handle error -- error is a FileError object */
+            });
+        };
+
+        getEntries();
+        return entries;
     }
 }

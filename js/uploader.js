@@ -26,6 +26,8 @@ var droppedFiles = false;
 				$("#initial-scale").hide();
 				$("#progress-scale").show();
 
+				console.log(files);
+				
 				// 将文件显示在进度页面之上
 				var trees = UI.showFiles(files);
 				
