@@ -2,27 +2,7 @@
 
 var droppedFiles = false;
 
-function traverseFileTree(item, path) {
-	path = path || "";
-
-	if (item.isFile) {
-		// Get file
-		item.file(function (file) {
-			console.log("File:", path + file.name);
-		});
-	} else if (item.isDirectory) {
-		// Get folder contents
-		var dirReader = item.createReader();
-
-		dirReader.readEntries(function (entries) {
-			for (var i = 0; i < entries.length; i++) {
-				traverseFileTree(entries[i], path + item.name + "/");
-			}
-		});
-	}
-}
-
-; (function (document, window, index) {
+(function (document, window, index) {
 	// feature detection for drag&drop upload
 	var isAdvancedUpload = function () {
 		var div = document.createElement('div');
@@ -41,11 +21,17 @@ function traverseFileTree(item, path) {
 			restart = form.querySelectorAll('.box__restart'),
 			showFiles = function (files) {
 
-				console.log(files);
+				// 在完成了文件的拖拽之后，会使用这个函数来处理UI界面的变化
+				// 拖拽完成之后会将初始页面进行隐藏，然后显示出上传进度页面
+				$("#initial-scale").hide();
+				$("#progress-scale").show();
 
+				// 将文件显示在进度页面之上
+				
+				
 				// 如果是拖拽了多个文件，则显示文件的数量
 				// 反之只显示唯一的一个文件的文件名
-				label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
+				// label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
 			},
 			triggerFormSubmit = function () {
 				var event = document.createEvent('HTMLEvents');
@@ -89,19 +75,12 @@ function traverseFileTree(item, path) {
 				});
 			});
 			form.addEventListener('drop', function (event) {
-				var items = event.dataTransfer.items;
-
-				for (var i = 0; i < items.length; i++) {
-					// webkitGetAsEntry is where the magic happens
-					var item = items[i].webkitGetAsEntry();
-
-					if (item) {
-						traverseFileTree(item);
-					}
-				}
-
+				
+				// 处理拖拽事件
+				var droppedFiles = Utils.populateTree(event).childs;
+							
 				// the files that were dropped
-				droppedFiles = event.dataTransfer.files;
+				// droppedFiles = event.dataTransfer.files;
 
 				showFiles(droppedFiles);
 			});
