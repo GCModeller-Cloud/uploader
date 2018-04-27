@@ -21,7 +21,11 @@
                 if (entry.isFile) {
                     root.addChild(FileNode(root, entry));
                 } else {
-                    root.addChild(DirectoryNode(root, entry));
+                    var list = readDirectory(entry);
+
+                    console.log(entry);
+                    console.log(list);
+                    // root.addChild(DirectoryNode(root, entry));
                 }
             }
         }
@@ -102,16 +106,42 @@
 
         let getEntries = function () {
             dirReader.readEntries(function (results) {
+
+                console.log(results);
+
                 if (results.length) {
-                    entries = entries.concat(toArray(results));
+
+                    for (var i = 0; i < results.length; i++) { 
+                        entries.push(results[i]);
+                    }
+
                     getEntries();
                 }
             }, function (error) {
                 /* handle error -- error is a FileError object */
+
+                // 2018-4-27 
+                // 当网页是直接从文件系统启动的时候，使用的协议为file://
+                // 会出现下面的错误
+                // DOMException: A URI supplied to the API was malformed, or the resulting Data URL has exceeded the URL length limitations for Data URLs.
+
+                /*
+                    https://developer.mozilla.org/en-US/docs/Web/API/FileError
+
+                    Where we can reed :
+                    Don't run your app from file://
+                    For security reasons, browsers do not allow you to run your app from file://.
+                    But using evt.dataTransfer.files seems to be ok, so this security limitation of drop seems to be partial.
+                */
+
+                // 在调试的时候应该从web服务器启动，在localhost进行调试
+
+                console.error(error);
             });
         };
 
         getEntries();
+
         return entries;
     }
 }
