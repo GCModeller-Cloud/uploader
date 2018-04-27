@@ -83,7 +83,7 @@
     }
 
     function FileNode(root: UploadFile, entry: any, append: Function) {
-        var localfile: File = entry.file(file => {
+        var localFile: any = entry.file(localfile => {
             var child: UploadFile = new UploadFile(
                 entry,
                 localfile.name,
@@ -95,6 +95,8 @@
 
             append(child);
         });
+
+        console.log(localFile);
     }
 
     /**
