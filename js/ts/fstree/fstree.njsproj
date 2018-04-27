@@ -13,8 +13,7 @@
     <ProjectGuid>929db7af-fb0c-4a19-818d-7a9a0b1a81a1</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>app.ts</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -41,6 +40,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="fstree.ts" />
+    <TypeScriptCompile Include="Models\fileObjectTypes.ts" />
+    <TypeScriptCompile Include="Models\UploadFile.ts" />
+    <TypeScriptCompile Include="UI\jstree.ts" />
     <TypeScriptCompile Include="Utils.ts" />
   </ItemGroup>
   <ItemGroup>
