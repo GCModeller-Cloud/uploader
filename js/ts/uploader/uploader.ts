@@ -1,25 +1,14 @@
-﻿class file {
-
-    name: string;
-    size: number;
-    type: fileObjectTypes;
-    parent: file;
-
-    public unitSize(): string {
-        return Utils.unitSize(this.size);
-    }
-}
-
-enum fileObjectTypes { file, directory };
-
-namespace Utils {
+﻿namespace Utils {
 
     /**
      * 处理拖拽事件，解析获取得到拖拽事件所产生的文件对象树
     */
-    export function populateTree(event: DragEvent): file {
+    export function populateTree(event: DragEvent): UploadFile {
         var items = event.dataTransfer.items;
-        var root: file;
+        var root: UploadFile = new UploadFile(null, "/", -1, null);
+
+        // items
+        var childs: UploadFile[] = [];
 
         for (var i = 0; i < items.length; i++) {
 
@@ -33,12 +22,52 @@ namespace Utils {
 
             if (entry) {
                 if (entry.isFile) {
-                    var file: FileSystemFileEntry = (FileSystemFileEntry) entry;
+                    appendFileNode(root, entry);
+                } else {
+                    appendDirectoryNode(root, entry);
                 }
             }
         }
 
         return root;
+    }
+
+    function appendDirectoryNode(root: UploadFile, entry: any) {
+        // Get folder contents
+        var dirReader = entry.createReader();
+        var folder: UploadFile = new UploadFile(
+            entry,
+            entry.name,
+            0,
+            root);
+
+        dirReader.readEntries(function (entries) {
+            for (var i = 0; i < entries.length; i++) {
+                var file: any = entries[i].webkitGetAsEntry();
+
+                if (file) {
+                    if (file.isFile) {
+                        appendFileNode(folder, file);
+                    } else {
+                        appendDirectoryNode(folder, file);
+                    }
+                }
+            }
+        });
+
+        return folder;
+    }
+
+    function appendFileNode(root: UploadFile, entry: any) {
+        var localfile: File = entry.file();
+        var child: UploadFile = new UploadFile(
+            entry,
+            localfile.name,
+            localfile.size,
+            root
+        );
+
+        root.addChild(child);
     }
 
     /**
