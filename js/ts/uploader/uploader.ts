@@ -3,16 +3,21 @@
 */
 function tree(files: any[]): UploadFile {
     var root: UploadFile = new UploadFile(null, "/", -1, null);
+    var childs: UploadFile[] = [];
+
+    childs["/"] = root;
 
     files.forEach(file => {
         var path: string[] = file.filepath.split("/");
         var name: string = file.name;
         var size: number = file.size;
-        var folder: UploadFile = travelToParent(root, path);
+        var folder: UploadFile = travelToParent(childs, path);
         var obj: UploadFile = new UploadFile(file, name, size, folder);
 
         folder.addChild(obj);
     });
+
+    console.log(childs);
 
     return root
 }
@@ -20,28 +25,24 @@ function tree(files: any[]): UploadFile {
 /**
  * 返回路径所指示的最后一个文件夹，如果不存在，则会进行创建
 */
-function travelToParent(root: UploadFile, path: string[]): UploadFile {
-    console.log(path.join("/") + " => " + path[path.length - 2]);
+function travelToParent(root: UploadFile[], path: string[]): UploadFile {
+    var dir: string = path.pop();
+    var name: string = path[path.length - 1];
 
-    for (var i = 0; i < path.length - 2; ++i) {
-        var name: string = path[i];
-        var folder: UploadFile = null;
+    dir = path.join("/");
 
-        console.log(name);
+    console.log(path.join("/") + " => " + path[path.length - 2] + " => " + dir);
 
-        if (root.hasChild(name)) {
-            folder = root.childs[name];
-            console.log("get");
-        } else {
-            folder = new UploadFile(null, name, 0, root);
-            root.addChild(folder);
-            console.log("build");
-        }
+    if (dir in root) {
+        return root[dir];
+    } else {
+        var parent: UploadFile = travelToParent(root, path);
+        var folder: UploadFile = new UploadFile(null, name, 0, parent);
 
-        root = folder;
+        root[dir] = folder;
+
+        return folder;
     }
-
-    return root;
 }
 
 namespace Utils {
