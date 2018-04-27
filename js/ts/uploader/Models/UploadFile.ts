@@ -3,12 +3,13 @@
 */
 class UploadFile {
 
-    name: string;
-    size: number;
-    type: fileObjectTypes;
-    parent: UploadFile;
-    childs: UploadFile[];
-    obj: any;
+    readonly name: string;
+    readonly size: number;
+    readonly type: fileObjectTypes;
+    readonly parent: UploadFile;
+    readonly obj: any;
+
+    public childs: UploadFile[];
 
     constructor(obj: any, name: string, size: number, parent: UploadFile) {
         if (!obj && !parent) {
@@ -28,13 +29,25 @@ class UploadFile {
         this.parent = parent;
     }
 
+    public QualifyName(): string {
+        if (this.parent) {
+            return `${this.parent.QualifyName()}/${this.name}`;
+        } else {
+            return `/${this.name}`;
+        }
+    }
+
+    public toString(): string {
+        return `${this.QualifyName()} (${this.unitSize()})`;
+    }
+
     /**
      * Append a file as child in this tree and returns current object instance.
      * 
      * @param child Child node
      */
     public addChild(child: UploadFile): UploadFile {
-        if (this.type = fileObjectTypes.file) {
+        if (this.type == fileObjectTypes.file) {
             throw new TypeError("Can not append a child into a file object, this function required a directory file type!");
         }
         if (!this.childs) {

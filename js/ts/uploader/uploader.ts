@@ -7,9 +7,6 @@
         var items = event.dataTransfer.items;
         var root: UploadFile = new UploadFile(null, "/", -1, null);
 
-        // items
-        var childs: UploadFile[] = [];
-
         for (var i = 0; i < items.length; i++) {
 
             // webkitGetAsEntry is where the magic happens
@@ -22,9 +19,9 @@
 
             if (entry) {
                 if (entry.isFile) {
-                    appendFileNode(root, entry);
+                    root.addChild(FileNode(root, entry));
                 } else {
-                    appendDirectoryNode(root, entry);
+                    root.addChild(DirectoryNode(root, entry));
                 }
             }
         }
@@ -32,7 +29,7 @@
         return root;
     }
 
-    function appendDirectoryNode(root: UploadFile, entry: any) {
+    function DirectoryNode(root: UploadFile, entry: any) {
         // Get folder contents
         var dirReader = entry.createReader();
         var folder: UploadFile = new UploadFile(
@@ -47,9 +44,9 @@
 
                 if (file) {
                     if (file.isFile) {
-                        appendFileNode(folder, file);
+                        folder.addChild(FileNode(folder, file));
                     } else {
-                        appendDirectoryNode(folder, file);
+                        folder.addChild(DirectoryNode(folder, file));
                     }
                 }
             }
@@ -58,7 +55,7 @@
         return folder;
     }
 
-    function appendFileNode(root: UploadFile, entry: any) {
+    function FileNode(root: UploadFile, entry: any): UploadFile {
         var localfile: File = entry.file();
         var child: UploadFile = new UploadFile(
             entry,
@@ -67,7 +64,7 @@
             root
         );
 
-        root.addChild(child);
+        return child;
     }
 
     /**

@@ -27,7 +27,9 @@ var droppedFiles = false;
 				$("#progress-scale").show();
 
 				// 将文件显示在进度页面之上
+				var trees = UI.showFiles(files);
 				
+				console.log(trees);
 				
 				// 如果是拖拽了多个文件，则显示文件的数量
 				// 反之只显示唯一的一个文件的文件名
