@@ -1,11 +1,27 @@
 ﻿namespace Utils {
 
+    class onReadyHandle {
+
+        public isReady: boolean;
+
+        constructor() {
+            this.isReady = false;
+        }
+
+        ready() {
+            this.isReady = true;
+        }
+    }
+
     /**
      * 处理拖拽事件，解析获取得到拖拽事件所产生的文件对象树
+     * 
+     * @param ready On filesystem tree build complete and ready for your operation.
     */
-    export function populateTree(event: DragEvent): UploadFile {
+    export function populateTree(event: DragEvent, ready: Function) {
         var items = event.dataTransfer.items;
         var root: UploadFile = new UploadFile(null, "/", -1, null);
+        var onReady: onReadyHandle[] = [];
 
         for (var i = 0; i < items.length; i++) {
 
@@ -19,14 +35,37 @@
 
             if (entry) {
                 if (entry.isFile) {
+                    var sync: onReadyHandle = new onReadyHandle();
+
                     FileNode(root, entry, (file: UploadFile) => {
                         root.addChild(file);
+                        sync.ready();
                     });
+
+                    // 异步转同步
+                    onReady.push(sync);
                 } else {
                     root.addChild(DirectoryNode(root, entry));
                 }
             }
         }
+
+        console.log("Wait for FileSystem Ready...");
+
+        do {
+            var n = onReady.length;
+            onReady.forEach(handle => {
+                if (handle.isReady) {
+                    n--;
+                }
+            });
+
+            if (n == 0) {
+                break;
+            }
+        } while (true);
+
+        console.log(root);
 
         return root;
     }
@@ -42,8 +81,6 @@
 
         dirReader.readEntries(function (entries) {
 
-            // console.log(entries);
-
             for (var i = 0; i < entries.length; i++) {
                 var file: any = entries[i];
 
@@ -55,6 +92,7 @@
                     folder.addChild(DirectoryNode(folder, file));
                 }
             }
+
         }, function (error) {
             /* handle error -- error is a FileError object */
 
@@ -77,7 +115,7 @@
             console.error(error);
         });
 
-        console.log(folder);
+        // console.log(folder);
 
         return folder;
     }
@@ -91,12 +129,12 @@
                 root
             );
 
-            console.log(child.toString());
+            // console.log(child.toString());
 
             append(child);
         });
 
-        console.log(localFile);
+        // console.log(localFile);
     }
 
     /**
